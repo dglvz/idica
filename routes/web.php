@@ -40,3 +40,5 @@ Route::get('/info_medica/create', [InfoMedicaController::class, 'create'])->name
 /*Route::get('/examenes', function () {
     return view('examenes.index');
 });*/
+use App\Http\Controllers\UsuariosController;
+Route::resource('usuarios', UsuariosController::class);

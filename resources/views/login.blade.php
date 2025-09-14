@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body { font-family: 'Instrument Sans', sans-serif; background: #fdfdfc; }
         .login-container { max-width: 400px; margin: 80px auto; padding: 32px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
@@ -28,18 +29,21 @@
         <label for="clave">Clave</label>
         <input type="password" id="clave" name="clave" required>
     </div>
-    <button type="submit">Ingresar</button>
-</form>
+    
+
 <div style="margin-top: 16px; text-align: center;">
-        <a href="/register">
-            <button type="button" style="background: #706f6c; color: #fff; border: none; border-radius: 4px; padding: 10px; width: 100%; font-weight: 600; cursor: pointer;">
-                Registrar Usuario
-            </button>
+    <a href="/inicio" class= "btn btn-primary"style="background: #f53003; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;" type="submit">Ingresar</a> 
+
+
+        <a href="{{ route('usuarios.create') }}" class="btn btn-primary" style="background: #f53003; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
+    Registrar un Usuario
+            
         </a>
     </div>
         <div style="margin-top: 16px; text-align: center;">
             <a href="/forgot-password" style="color: #f53003; text-decoration: none;">¿Olvidaste tu clave?</a>
         </div>
     </div>
+    </form> 
 </body>
 </html>

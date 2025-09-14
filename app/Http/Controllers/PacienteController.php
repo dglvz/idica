@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 class PacienteController extends Controller
 {
     // Mostrar todos los pacientes
-   public function index()
+   public function index(Request $request)
 {
     // Con eager loading de ultimoExamen para evitar consultas N+1
-    $pacientes = Paciente::with('ultimoExamen')
-                         ->orderBy('nombre')
-                         ->paginate(15);
+    $query = Paciente::query();
+
+    if ($request->filled('buscar')) {
+        $buscar = $request->input('buscar');
+        $query->where('nombre', 'like', "%{$buscar}%")
+              ->orWhere('cedula', 'like', "%{$buscar}%")
+              ->orWhere('correo', 'like', "%{$buscar}%");
+    }
+
+    $pacientes = $query->orderBy('nombre')->paginate(15);
 
     return view('pacientes', compact('pacientes'));
 }

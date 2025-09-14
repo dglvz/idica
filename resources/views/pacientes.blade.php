@@ -13,6 +13,10 @@
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>Lista de Pacientes</h2>
+            <form method="GET" action="{{ route('pacientes.index') }}" style="display: flex; gap: 8px;">
+        <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar paciente..." style="padding: 7px; border-radius: 4px; border: 1px solid #ccc;">
+        <button type="submit" style="background: #17a2b8; color: #fff; padding: 7px 14px; border-radius: 4px; border: none; font-weight: 600;">Buscar</button>
+    </form>
             <a href="{{ route('pacientes.create') }}" style="background: #f53003; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
                 + Agregar Paciente
             </a>
@@ -71,6 +75,7 @@
                         <td colspan="9" style="text-align:center;">No hay pacientes registrados.</td>
                     </tr>
                 @endforelse
+                {{ $pacientes->appends(['buscar' => request('buscar')])->links() }}
             </tbody>
         </table>
     </div>
