@@ -1,0 +1,47 @@
+body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: #fdfdfc;
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 48px auto 0 auto;
+    padding: 32px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+h2 {
+    margin-bottom: 24px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+}
+
+th,
+td {
+    border: 1px solid #e3e3e0;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background: #f53003;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.truncate-text {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
