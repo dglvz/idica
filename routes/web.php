@@ -42,3 +42,10 @@ Route::get('/info_medica/create', [InfoMedicaController::class, 'create'])->name
 });*/
 use App\Http\Controllers\UsuariosController;
 Route::resource('usuarios', UsuariosController::class);
+
+use App\Http\Controllers\OrthancController;
+// routes/web.php
+Route::get('/orthanc/patients', [OrthancController::class, 'patients']);
+Route::get('/orthanc/studies', [OrthancController::class, 'studies']);
+Route::get('/orthanc/study/{id}', [OrthancController::class, 'study']);
+Route::post('/orthanc/upload', [OrthancController::class, 'uploadDicom']);
