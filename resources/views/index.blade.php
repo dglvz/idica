@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Inicio</title>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navbar-user.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <style>
         body { font-family: 'Instrument Sans', sans-serif; background: #fdfdfc; margin: 0; }
@@ -22,7 +22,7 @@
     </style>
 </head>
 <body>
-   <x-navbar title="Inicio"/>
+    <x-navbar-user title="Inicio"/>
     <div class="dashboard-container">
         <h2>Bienvenido al Dashboard</h2>
         <p>Selecciona una opción del menú superior para continuar.</p>
