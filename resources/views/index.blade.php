@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Inicio</title>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navbar_user.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <style>
         body { font-family: 'Instrument Sans', sans-serif; background: #fdfdfc; margin: 0; }
