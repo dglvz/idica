@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('indexs');
+    return view('index');
 });
 
 Route::get('/registrarusuarios', function () {
