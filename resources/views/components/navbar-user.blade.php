@@ -5,9 +5,9 @@
     <div class="navbar-content">
         <div class="navbar-title">{{ $title ?? 'Titulo' }}</div>
         <div class="navbar-menu">
-            <a href="/inicio">Inicio</a>
-            <a href="/pacientes">Contactanos</a>
-            <a href="/usuarios.create">Registrarse</a>    
+            <a href="/">Inicio</a>
+            <a href="/contacto">Contactanos</a>
+            <a href="/usuarios/create">Registrarse</a>    
             <a href="/login">Iniciar sesion</a>
         </div>
     </div>

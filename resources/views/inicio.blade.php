@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <style>
-        body { font-family: 'Instrument Sans', sans-serif; background: #fdfdfc; margin: 0; }
+        body { font-family: 'Instrument Sans', sans-serif;  margin: 0; }
      
         .dashboard-container {
             max-width: 600px;

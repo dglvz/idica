@@ -9,7 +9,7 @@
     <x-navbar title="Historias Médicas"/>
     <div class="container">
         <h2>Listado de Historias Médicas</h2>
-        <a href="{{ route('info_medica.create') }}" class="btn btn-primary" style="background: #f53003; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
+        <a href="{{ route('info_medica.create') }}" class="btn btn-primary" style="background: #255caf; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
             + Nueva Historia Médica
         </a>
 

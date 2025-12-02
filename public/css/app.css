@@ -1,6 +1,6 @@
 body {
     font-family: 'Instrument Sans', sans-serif;
-    background: #fdfdfc;
+    background: #83a5e6;
     margin: 0;
 }
 
@@ -31,7 +31,7 @@ td {
 }
 
 th {
-    background: #f53003;
+    background: #255caf;
     color: #fff;
 }
 

@@ -6,6 +6,11 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/login', function () {
+    return view('login');
+});
+
+
 Route::get('/registrarusuarios', function () {
     return view('registrarUsuarios');
 });

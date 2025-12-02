@@ -27,14 +27,14 @@
         button {
             width: 100%;
             padding: 10px;
-            background: #f53003;
+            background: #255caf;
             color: #fff;
             border: none;
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
         }
-        button:hover { background: #d42a00; }
+        button:hover { background: #255caf; }
     </style>
 </head>
 <body>
@@ -78,7 +78,11 @@
                     <option value="">Seleccione</option>
                     <option value="Oncologico">Oncologico</option>
                     <option value="Pediatrico">Pediatrico</option>
-                    <option value="Radiografia">Radiografia</option>
+                    <option value="Rayos X">Rayos X</option>
+                     <option value="Estudios Contrastados">Estudios Contrastados</option>
+                     <option value="Radiologia General">Radiologia General</option>
+                     <option value="Ultrasonido">Ultrasonido</option>
+                      <option value="Ecografia General">Ecografia General</option>
                 </select>
             </div>
             <div class="form-group">

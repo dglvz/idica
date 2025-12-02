@@ -17,7 +17,7 @@
         <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar paciente..." style="padding: 7px; border-radius: 4px; border: 1px solid #ccc;">
         <button type="submit" style="background: #17a2b8; color: #fff; padding: 7px 14px; border-radius: 4px; border: none; font-weight: 600;">Buscar</button>
     </form>
-            <a href="{{ route('pacientes.create') }}" style="background: #f53003; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
+            <a href="{{ route('pacientes.create') }}" style="background: #255caf; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
                 + Agregar Paciente
             </a>
         </div>
