@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Paciente;
 use Illuminate\Http\Request;
+use App\Models\InfoMedica;
 
 class PacienteController extends Controller
 {
@@ -51,8 +52,9 @@ class PacienteController extends Controller
     // Mostrar un paciente específico
     public function show($id)
     {
-       $paciente = Paciente::with('imagenes')->findOrFail($id);
-    return view('pacientes_show', compact('paciente'));
+       $paciente = Paciente::with(['imagenes', 'infoMedica'])->findOrFail($id);
+       $orthanc_url = config('orthanc.url');
+       return view('pacientes_show', compact('paciente', 'orthanc_url'));
  }
 
     // Mostrar el formulario para editar un paciente

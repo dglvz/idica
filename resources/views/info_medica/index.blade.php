@@ -25,6 +25,7 @@
                     <th>Tipo de Examen</th>
                     <th>Información</th>
                     <th>Fecha de Registro</th>
+                    <th>DICOM</th>
                     <th style="width: 140px;">Acciones</th>
                 </tr>
             </thead>
@@ -36,6 +37,15 @@
                         <td>{{ $info->tipo_examen }}</td>
                         <td class="truncate-text">{{ $info->informacion }}</td>
                         <td>{{ $info->created_at->format('d/m/Y') }}</td>
+                        <td>
+                            @if(!empty($info->orthanc_study_id))
+                                <a href="{{ $orthanc_url . config('orthanc.viewer_path') }}?study={{ $info->orthanc_study_id }}" 
+                                   target="_blank"
+                                   style="background: #4a90e2; color: #fff; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+                                    Ver Viewer
+                                </a>
+                            @endif
+                        </td>
                         <td style="white-space: nowrap;">
                             <a href="{{ route('info_medica.show', $info) }}" 
                                title="Visualizar historia"
@@ -61,7 +71,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="text-align:center;">No hay historias médicas registradas.</td>
+                        <td colspan="7" style="text-align:center;">No hay historias médicas registradas.</td>
                     </tr>
                 @endforelse
             </tbody>

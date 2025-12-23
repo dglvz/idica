@@ -21,6 +21,11 @@
         <h2>Iniciar Sesión</h2>
         <form method="POST" action="/login">
     @csrf
+    @if($errors->any())
+        <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 16px; border: 1px solid #f5c6cb;">
+            {{ $errors->first() }}
+        </div>
+    @endif
     <div class="form-group">
         <label for="nombre">Nombre de Usuario</label>
         <input type="text" id="nombre" name="nombre" required autofocus>

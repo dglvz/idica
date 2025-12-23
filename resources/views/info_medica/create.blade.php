@@ -53,7 +53,7 @@
     <label for="paciente_id">Seleccionar Paciente:</label>
     <select name="paciente_id" id="paciente_id" required>
         @foreach($pacientes as $paciente)
-            <option value="{{ $paciente->id }}">
+            <option value="{{ $paciente->id }}" {{ request('paciente_id') == $paciente->id ? 'selected' : '' }}>
                 {{ $paciente->nombre }} - {{ $paciente->cedula }}
             </option>
         @endforeach
@@ -72,6 +72,10 @@
 
     <label for="descripcion_imagen">Descripción de la imagen (opcional):</label>
     <input type="text" name="descripcion_imagen" id="descripcion_imagen">
+
+    <!-- Campo para archivo DICOM -->
+    <label for="archivo_dicom">Archivo DICOM (opcional):</label>
+    <input type="file" name="archivo_dicom" id="archivo_dicom" accept=".dcm,application/dicom">
 
     <button type="submit">Guardar</button>
 </form>

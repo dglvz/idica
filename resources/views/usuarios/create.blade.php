@@ -43,5 +43,8 @@
             <button type="submit">Registrar</button>
         </form>
         <div style="margin-top: 16px; text-align: center;">
-            <a href="/" style="color: #f53003; text-decoration: none;">¿Ya tienes cuenta? Inicia sesión</a>
+            <a href="/login" style="color: #f53003; text-decoration: none;">¿Ya tienes cuenta? Inicia sesión</a>
         </div>
+    </div>
+</body>
+</html>

@@ -29,7 +29,7 @@
 <body>
     <x-navbar title="Información detallada"/> 
 
-    <div class="container">
+    <div class="dashboard-container">
         <h2>Detalles de {{ $paciente->nombre }}</h2>
 
         <div class="details-wrapper">
@@ -112,10 +112,34 @@
             <!-- Nuevo bloque a la derecha: Info. Médica -->
             <div class="details-medical">
                 <h3>Información Médica</h3>
-                <p>
-                    {{ optional($paciente->ultimoExamen)->informacion 
-                       ?? 'Sin registros de exámenes médicos.' }}
-                </p>
+                <div style="margin-bottom: 15px;">
+                    <a href="{{ route('info_medica.create', ['paciente_id' => $paciente->id]) }}" 
+                       style="background: #255caf; color: #fff; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+                        + Agregar Examen
+                    </a>
+                </div>
+
+                @if($paciente->infoMedica->isEmpty())
+                    <p>Sin registros de exámenes médicos.</p>
+                @else
+                    <ul style="list-style: none; padding: 0;">
+                        @foreach($paciente->infoMedica as $info)
+                            <li style="background: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 6px;">
+                                <strong>{{ $info->tipo_examen }}</strong> <br>
+                                <small style="color: #666;">{{ $info->created_at->format('d/m/Y') }}</small>
+                                <p style="margin: 5px 0; font-size: 0.9em;">{{ $info->informacion }}</p>
+                                
+                                @if(!empty($info->orthanc_study_id))
+                                    <a href="{{ $orthanc_url . config('orthanc.viewer_path') }}?study={{ $info->orthanc_study_id }}" 
+                                       target="_blank"
+                                       style="display: inline-block; margin-top: 5px; background: #4a90e2; color: #fff; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+                                        Ver DICOM en Orthanc
+                                    </a>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </div>

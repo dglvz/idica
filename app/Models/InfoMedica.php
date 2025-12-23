@@ -15,6 +15,7 @@ class InfoMedica extends Model
     'paciente_id',
     'informacion',
     'tipo_examen',
+    'orthanc_study_id',
     ];
 
     public function paciente()

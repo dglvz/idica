@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\InfoMedica;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
+use App\Services\OrthancService;
 
 class InfoMedicaController extends Controller
 {
+    protected $orthancService;
+
+    public function __construct(OrthancService $orthancService)
+    {
+        $this->orthancService = $orthancService;
+    }
+
     // Listado con paginación y eager loading del paciente
     public function index()
     {
@@ -15,7 +23,8 @@ class InfoMedicaController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('info_medica.index', compact('info_medica'));
+        $orthanc_url = config('orthanc.url');
+        return view('info_medica.index', compact('info_medica', 'orthanc_url'));
     }
 
     // Formulario para crear
@@ -35,13 +44,34 @@ class InfoMedicaController extends Controller
         'tipo_examen'  => 'required|string|max:255',
         'imagen'       => 'nullable|image|max:2048',
         'descripcion_imagen' => 'nullable|string|max:255',
+        'archivo_dicom' => 'nullable|file',
     ]);
 
-    $infoMedica = InfoMedica::create($request->only([
+    $data = $request->only([
         'paciente_id',
         'informacion',
         'tipo_examen',
-    ]));
+    ]);
+
+    // Subir a Orthanc si existe archivo DICOM
+    if ($request->hasFile('archivo_dicom')) {
+        try {
+            $filePath = $request->file('archivo_dicom')->getPathname();
+            $response = $this->orthancService->uploadDicom($filePath);
+
+            // VALIDACIÓN: Si Orthanc no devuelve un ID (ej. ZIP sin DICOMs válidos), lanzamos error
+            if (empty($response['ParentStudy'])) {
+                return back()->withErrors(['archivo_dicom' => 'El archivo se subió, pero no se detectaron imágenes DICOM válidas para generar un estudio.'])->withInput();
+            }
+
+            // Guardamos el ID del estudio de Orthanc para generar el link al visualizador
+            $data['orthanc_study_id'] = $response['ParentStudy'];
+        } catch (\Exception $e) {
+            return back()->withErrors(['archivo_dicom' => 'Error al conectar con Orthanc. Asegúrese de que el servicio esté encendido.'])->withInput();
+        }
+    }
+
+    $infoMedica = InfoMedica::create($data);
 
     // Si hay imagen, la guardamos
     if ($request->hasFile('imagen')) {
@@ -63,7 +93,8 @@ class InfoMedicaController extends Controller
     {
         $info_medica->load('paciente');
 
-        return view('info_medica.show', compact('info_medica'));
+        $orthanc_url = config('orthanc.url');
+        return view('info_medica.show', compact('info_medica', 'orthanc_url'));
     }
 
     // Formulario para edición (incluye lista de pacientes)

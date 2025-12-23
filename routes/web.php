@@ -54,3 +54,10 @@ Route::get('/orthanc/patients', [OrthancController::class, 'patients']);
 Route::get('/orthanc/studies', [OrthancController::class, 'studies']);
 Route::get('/orthanc/study/{id}', [OrthancController::class, 'study']);
 Route::post('/orthanc/upload', [OrthancController::class, 'uploadDicom']);
+
+use App\Http\Controllers\AuthController;
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Asegúrate de que las rutas 'usuarios.index' e 'inicio' existan y estén protegidas por middleware auth si es necesario.

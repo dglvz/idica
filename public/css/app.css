@@ -27,6 +27,13 @@ body {
         border-radius: 0;
     }
 }
+
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Crea la barra de desplazamiento si es necesario */
+    -webkit-overflow-scrolling: touch; /* Suavidad en iOS */
+    margin-top: 24px;
+}
 .container {
     max-width: 1000px;
     margin: 48px auto 0 auto;

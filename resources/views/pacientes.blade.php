@@ -20,7 +20,7 @@
             <a href="{{ route('pacientes.create') }}" style="background: #255caf; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 600;">
                 + Agregar Paciente
             </a>
-        </div>
+        </div class="table-container">
         <table>
             <thead>
                 <tr>
@@ -57,6 +57,11 @@
                               title="Editar paciente"
                                  style="background: #ffc107; color: #fff; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: 600; margin-right: 6px;">
                                             ✏️
+                            </a>
+                            <a href="{{ route('info_medica.create', ['paciente_id' => $paciente->id]) }}" 
+                               title="Subir DICOM / Examen"
+                               style="background: #6f42c1; color: #fff; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: 600; margin-right: 6px;">
+                                📁
                             </a>
                              <form action="{{ route('pacientes.destroy', $paciente->id) }}" method="POST" style="display:inline;">
                               @csrf
