@@ -2,16 +2,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8", name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/navbar-user.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <style>
-        body { font-family: 'Instrument Sans', sans-serif; background: #fdfdfc; margin: 0; }
+        body { font-family: 'Instrument Sans', sans-serif; margin: 0; }
      
         .dashboard-container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 48px auto 0 auto;
             padding: 32px;
             background: #fff;
@@ -24,5 +24,7 @@
 <body>
     <x-navbar-user title="Inicio"/>
     <div class="dashboard-container">
-        <h2>Bienvenido al Dashboard</h2>
-        <p>Selecciona una opción del menú superior para continuar.</p>
+        <h2>Bienvenido a la plataforma digital de IDICA</h2>
+        <p>Selecciona una opción del menú superior para navegar a través de nuestras funciones</p>
+        <p>para revisar sus examenes inicie sesion usando su respectivo usuario y contraseña
+        </p>

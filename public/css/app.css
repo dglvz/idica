@@ -4,6 +4,29 @@ body {
     margin: 0;
 }
 
+.dashboard-container {
+    max-width: 650px;
+    margin: 48px auto 0 auto; /* Centrado */
+    padding: 32px;
+}
+
+@media (max-width: 600px) {
+    .dashboard-container {
+        /* 1. Ocupar casi todo el ancho */
+        max-width: 100%; 
+        width: auto; /* Permite que el margen funcione */
+        
+        /* 2. Usar márgenes laterales fijos para evitar que el contenido pegue en los bordes */
+        margin: 20px 16px; /* Margen superior/inferior: 20px, Lateral: 16px */
+        
+        /* 3. Reducir el relleno interno para aprovechar el espacio */
+        padding: 20px; 
+        
+        /* (Opcional) Quitar la sombra y bordes redondeados en móvil para un look más "nativo" */
+        box-shadow: none;
+        border-radius: 0;
+    }
+}
 .container {
     max-width: 1000px;
     margin: 48px auto 0 auto;
