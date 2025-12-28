@@ -15,6 +15,7 @@ class OrthancService
             'base_uri' => config('orthanc.url'),
             'auth' => [config('orthanc.user'), config('orthanc.pass')],
             'verify' => false, // ya que usamos HTTP
+            'timeout' => 300, // Timeout de 5 minutos para evitar cortes en subidas grandes
         ]);
     }
 
@@ -33,24 +34,35 @@ class OrthancService
     }
 
     // Subir archivo DICOM
-    public function uploadDicom($filePath)
+    public function uploadDicom($filePath, $paciente = null)
     {
         // Detectar si es un archivo ZIP
         $mimeType = mime_content_type($filePath);
+        $response = [];
+
         if ($mimeType === 'application/zip' || $mimeType === 'application/x-zip-compressed') {
-            return $this->uploadZip($filePath);
+            $response = $this->uploadZip($filePath);
+        } else {
+            $httpResponse = $this->client->post('/instances', [
+                'multipart' => [
+                    [
+                        'name' => 'file',
+                        'contents' => fopen($filePath, 'r')
+                    ]
+                ]
+            ]);
+            $response = json_decode($httpResponse->getBody(), true);
         }
 
-        $response = $this->client->post('/instances', [
-            'multipart' => [
-                [
-                    'name' => 'file',
-                    'contents' => fopen($filePath, 'r')
-                ]
-            ]
-        ]);
+        // Si se proporcionó un paciente y la subida fue exitosa, sincronizamos los metadatos en Orthanc
+        if ($paciente && !empty($response['ParentStudy'])) {
+            $newStudyId = $this->assignPatientToStudy($response['ParentStudy'], $paciente);
+            if ($newStudyId) {
+                $response['ParentStudy'] = $newStudyId;
+            }
+        }
 
-        return json_decode($response->getBody(), true);
+        return $response;
     }
 
     // Método auxiliar para procesar ZIPs
@@ -88,6 +100,31 @@ class OrthancService
         }
 
         return ['ParentStudy' => $studyId];
+    }
+
+    // Asignar metadatos del paciente de Laravel al estudio de Orthanc
+    protected function assignPatientToStudy($studyId, $paciente)
+    {
+        try {
+            // Usamos el endpoint /modify para sobrescribir los tags DICOM
+            // Esto crea un nuevo estudio con los datos corregidos y borra el anterior
+            $response = $this->client->post("/studies/{$studyId}/modify", [
+                'json' => [
+                    'Replace' => [
+                        'PatientID'   => (string) $paciente->cedula,
+                        'PatientName' => (string) $paciente->nombre,
+                    ],
+                    'KeepSource' => false, // Borra el estudio original (con datos incorrectos)
+                    'Force' => true,       // Fuerza la modificación
+                ]
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+            return $data['ID'] ?? null;
+        } catch (\Exception $e) {
+            Log::error("Error al sincronizar estudio {$studyId} con paciente {$paciente->cedula}: " . $e->getMessage());
+            return null; // Si falla, retornamos null para conservar el ID original
+        }
     }
 
     // Listar todos los estudios

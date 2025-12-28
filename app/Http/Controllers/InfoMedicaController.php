@@ -38,6 +38,9 @@ class InfoMedicaController extends Controller
     // Almacenar nuevo registro
     public function store(Request $request)
 {
+    // Aumentar el tiempo máximo de ejecución a 5 minutos (300 segundos) para subidas grandes
+    set_time_limit(300);
+
     $request->validate([
         'paciente_id'  => 'required|exists:pacientes,id',
         'informacion'  => 'nullable|string',
@@ -56,8 +59,9 @@ class InfoMedicaController extends Controller
     // Subir a Orthanc si existe archivo DICOM
     if ($request->hasFile('archivo_dicom')) {
         try {
+            $paciente = Paciente::findOrFail($request->paciente_id);
             $filePath = $request->file('archivo_dicom')->getPathname();
-            $response = $this->orthancService->uploadDicom($filePath);
+            $response = $this->orthancService->uploadDicom($filePath, $paciente);
 
             // VALIDACIÓN: Si Orthanc no devuelve un ID (ej. ZIP sin DICOMs válidos), lanzamos error
             if (empty($response['ParentStudy'])) {
