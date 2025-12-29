@@ -44,7 +44,7 @@
         <form method="POST" action="{{ route('pacientes.store') }}">
             @csrf
             <div class="form-group">
-                <label for="nombre">Nombre</label>
+                <label for="nombre">Nombre Completo</label>
                 <input type="text" id="nombre" name="nombre" required>
             </div>
             <div class="form-group">
