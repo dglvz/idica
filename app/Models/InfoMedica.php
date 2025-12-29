@@ -16,6 +16,7 @@ class InfoMedica extends Model
     'informacion',
     'tipo_examen',
     'orthanc_study_id',
+    'status',
     ];
 
     public function paciente()
@@ -28,5 +29,3 @@ class InfoMedica extends Model
         return $this->hasMany(Imagen::class, 'info_medica_id');
     }   
 }
-
-

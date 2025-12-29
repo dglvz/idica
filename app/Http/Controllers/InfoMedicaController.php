@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessDicomUpload;
 use App\Models\InfoMedica;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
 use App\Services\OrthancService;
+use Illuminate\Support\Facades\Log;
 
 class InfoMedicaController extends Controller
 {
@@ -38,9 +40,6 @@ class InfoMedicaController extends Controller
     // Almacenar nuevo registro
     public function store(Request $request)
 {
-    // Aumentar el tiempo máximo de ejecución a 5 minutos (300 segundos) para subidas grandes
-    set_time_limit(300);
-
     $request->validate([
         'paciente_id'  => 'required|exists:pacientes,id',
         'informacion'  => 'nullable|string',
@@ -56,26 +55,19 @@ class InfoMedicaController extends Controller
         'tipo_examen',
     ]);
 
+    // Crear el registro médico inmediatamente con estado 'processing'
+    $infoMedica = InfoMedica::create($data + ['status' => 'processing']);
+
     // Subir a Orthanc si existe archivo DICOM
     if ($request->hasFile('archivo_dicom')) {
-        try {
-            $paciente = Paciente::findOrFail($request->paciente_id);
-            $filePath = $request->file('archivo_dicom')->getPathname();
-            $response = $this->orthancService->uploadDicom($filePath, $paciente);
+        // Mover el archivo a una ubicación de almacenamiento temporal segura
+        // El disco 'local' corresponde a 'storage/app/private'
+        $path = $request->file('archivo_dicom')->store('dicom-uploads', 'local');
+        $absolutePath = storage_path('app/' . $path);
 
-            // VALIDACIÓN: Si Orthanc no devuelve un ID (ej. ZIP sin DICOMs válidos), lanzamos error
-            if (empty($response['ParentStudy'])) {
-                return back()->withErrors(['archivo_dicom' => 'El archivo se subió, pero no se detectaron imágenes DICOM válidas para generar un estudio.'])->withInput();
-            }
-
-            // Guardamos el ID del estudio de Orthanc para generar el link al visualizador
-            $data['orthanc_study_id'] = $response['ParentStudy'];
-        } catch (\Exception $e) {
-            return back()->withErrors(['archivo_dicom' => 'Error al conectar con Orthanc. Asegúrese de que el servicio esté encendido.'])->withInput();
-        }
+        // Despachar el trabajo para procesar en segundo plano
+        ProcessDicomUpload::dispatch($infoMedica, $absolutePath);
     }
-
-    $infoMedica = InfoMedica::create($data);
 
     // Si hay imagen, la guardamos
     if ($request->hasFile('imagen')) {
@@ -88,8 +80,8 @@ class InfoMedicaController extends Controller
     }
 
     return redirect()
-        ->route('info_medica.index')
-        ->with('success', 'Información médica registrada.');
+        ->route('pacientes.show', $request->paciente_id)
+        ->with('success', 'El examen ha sido enviado para su procesamiento. Aparecerá en la lista en unos momentos.');
 }   
 
     // Mostrar detalle (con model binding y carga del paciente)

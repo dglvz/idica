@@ -124,17 +124,21 @@
                 @else
                     <ul style="list-style: none; padding: 0;">
                         @foreach($paciente->infoMedica as $info)
-                            <li style="background: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 6px;">
+                            <li style="background: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 6px; opacity: {{ $info->status === 'processing' ? '0.6' : '1' }};">
                                 <strong>{{ $info->tipo_examen }}</strong> <br>
                                 <small style="color: #666;">{{ $info->created_at->format('d/m/Y') }}</small>
                                 <p style="margin: 5px 0; font-size: 0.9em;">{{ $info->informacion }}</p>
                                 
-                                @if(!empty($info->orthanc_study_id))
+                                @if($info->status === 'completed' && !empty($info->orthanc_study_id))
                                     <a href="{{ $orthanc_url . config('orthanc.viewer_path') }}?study={{ $info->orthanc_study_id }}" 
                                        target="_blank"
                                        style="display: inline-block; margin-top: 5px; background: #4a90e2; color: #fff; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 12px;">
                                         Ver DICOM en Orthanc
                                     </a>
+                                @elseif($info->status === 'processing')
+                                    <small style="display: inline-block; margin-top: 5px; background: #f0ad4e; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Procesando...</small>
+                                @elseif($info->status === 'failed')
+                                    <small style="display: inline-block; margin-top: 5px; background: #d9534f; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Falló</small>
                                 @endif
                             </li>
                         @endforeach
