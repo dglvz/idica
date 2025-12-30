@@ -55,7 +55,15 @@ class ProcessDicomUpload implements ShouldQueue
 
 public function failed(\Throwable $exception): void
     {
-        Log::error("Job ProcessDicomUpload falló definitivamente para ID {$this->infoMedica->id_historia}: " . $exception->getMessage());
+        // Añadimos más contexto al log para diagnosticar problemas de permisos
+        $currentUser = posix_getpwuid(posix_geteuid())['name'] ?? 'Usuario Desconocido';
+        $logMessage = "Job ProcessDicomUpload falló para ID {$this->infoMedica->id_historia}. ";
+        $logMessage .= "Usuario del worker: {$currentUser}. ";
+        $logMessage .= "Ruta del archivo: {$this->filePath}. ";
+        $logMessage .= "Error: " . $exception->getMessage();
+        
+        Log::error($logMessage);
+
         $this->infoMedica->status = 'failed';
         $this->infoMedica->save();
 

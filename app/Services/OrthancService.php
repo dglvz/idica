@@ -43,6 +43,10 @@ class OrthancService
         if ($mimeType === 'application/zip' || $mimeType === 'application/x-zip-compressed') {
             $response = $this->uploadZip($filePath);
         } else {
+            if (!is_readable($filePath)) {
+                throw new \Exception("El archivo DICOM no se puede leer o no existe en la ruta: {$filePath}");
+            }
+
             $httpResponse = $this->client->post('/instances', [
                 'multipart' => [
                     [
