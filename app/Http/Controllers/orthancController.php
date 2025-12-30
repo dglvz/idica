@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\OrthancService;
+use Illuminate\Support\Facades\Log;
 
 class OrthancController extends Controller
 {
@@ -23,14 +24,27 @@ class OrthancController extends Controller
     // Subir un archivo DICOM
     public function uploadDicom(Request $request)
     {
-        $request->validate([
-            'dicom_file' => 'required|file',
-        ]);
+        // Aumentar el tiempo de ejecución a 5 minutos para archivos grandes
+        set_time_limit(300);
 
-        $filePath = $request->file('dicom_file')->getPathname();
-        $result = $this->orthanc->uploadDicom($filePath);
+        try {
+            $request->validate([
+                'dicom_file' => 'required|file',
+            ]);
 
-        return response()->json($result);
+            $file = $request->file('dicom_file');
+            $filePath = $file->getPathname();
+
+            Log::info("Iniciando subida a Orthanc. Archivo: " . $file->getClientOriginalName() . ", Tamaño: " . $file->getSize());
+
+            $result = $this->orthanc->uploadDicom($filePath);
+
+            Log::info("Subida a Orthanc completada con éxito.");
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error("Error al subir archivo a Orthanc: " . $e->getMessage());
+            return response()->json(['error' => 'Error al procesar el archivo: ' . $e->getMessage()], 500);
+        }
     }
 
     // Listar estudios
