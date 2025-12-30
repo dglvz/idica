@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('info_medica', function (Blueprint $table) {
-            //
+            if (!Schema::hasColumn('info_medica', 'status')) {
+                $table->string('status')->default('pending')->after('orthanc_study_id');
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('info_medica', function (Blueprint $table) {
-            //
+            if (Schema::hasColumn('info_medica', 'status')) {
+                $table->dropColumn('status');
+            }
         });
     }
 };
