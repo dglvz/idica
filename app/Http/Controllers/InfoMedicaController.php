@@ -60,12 +60,21 @@ class InfoMedicaController extends Controller
 
     // Subir a Orthanc si existe archivo DICOM
     if ($request->hasFile('archivo_dicom')) {
-        // Mover el archivo a una ubicación de almacenamiento temporal segura
-        // El disco 'local' corresponde a 'storage/app/private'
         $path = $request->file('archivo_dicom')->store('dicom-uploads', 'local');
-        $absolutePath = storage_path('app/' . $path);
 
-        // Despachar el trabajo para procesar en segundo plano
+        if (!$path) {
+            // Falló el almacenamiento del archivo, actualizar estado y registrar error
+            $infoMedica->status = 'failed';
+            $infoMedica->save();
+            Log::error("Error Crítico: No se pudo guardar el archivo subido en el disco local para InfoMedica ID: {$infoMedica->id}. Verifique los permisos de escritura en la carpeta storage/app/dicom-uploads.");
+            
+            // Redirigir con un error claro
+            return redirect()
+                ->route('pacientes.show', $request->paciente_id)
+                ->with('error', 'Error crítico al guardar el archivo en el servidor. Contacte al administrador.');
+        }
+
+        $absolutePath = storage_path('app/' . $path);
         ProcessDicomUpload::dispatch($infoMedica, $absolutePath);
     }
 
