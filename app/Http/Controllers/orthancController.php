@@ -36,6 +36,7 @@ class OrthancController extends Controller
             $filePath = $file->getPathname();
 
             Log::info("Iniciando subida a Orthanc. Archivo: " . $file->getClientOriginalName() . ", Tamaño: " . $file->getSize());
+            Log::info("URL de Orthanc configurada: " . config('orthanc.url'));
 
             $result = $this->orthanc->uploadDicom($filePath);
 
