@@ -97,8 +97,12 @@ class InfoMedicaController extends Controller
     {
         $info_medica->load('paciente');
 
-        $orthanc_url = config('orthanc.url');
-        return view('info_medica.show', compact('info_medica', 'orthanc_url'));
+        $study_instance_uid = $this->orthanc->getStudyInstanceUID($info_medica->orthanc_study_id);
+        return view('info_medica.show', [
+            'info_medica' => $info_medica,
+            'orthanc_url' => config('orthanc.url'),
+            'study_instance_uid' => $study_instance_uid,
+        ]);
     }
 
     // Formulario para edición (incluye lista de pacientes)

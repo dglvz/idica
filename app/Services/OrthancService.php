@@ -140,4 +140,16 @@ class OrthancService
         $response = $this->client->get("/studies/{$id}");
         return json_decode($response->getBody(), true);
     }
+
+    public function getStudyInstanceUID($orthanc_study_id)
+    {
+        try {
+            $response = $this->client->get("/studies/{$orthanc_study_id}");
+            $studyData = json_decode($response->getBody(), true);
+            return $studyData['MainDicomTags']['StudyInstanceUID'] ?? null;
+        } catch (\Exception $e) {
+            Log::error("Error obteniendo StudyInstanceUID: " . $e->getMessage());
+            return null;
+        }
+    }
 }

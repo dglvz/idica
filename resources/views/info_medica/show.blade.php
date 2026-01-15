@@ -24,14 +24,14 @@
 
             @if(!empty($info_medica->orthanc_study_id))
                 <div style="margin-top: 20px;">
-                    <h4 style="margin-bottom: 10px; color: #333;">Visualizador DICOM</h4>
+                    <h4 style="margin-bottom: 10px; color: #333;">Visualizador DICOM (OHIF)</h4>
                     <iframe 
-                        src="{{ $orthanc_url . config('orthanc.viewer_path') }}?study={{ $info_medica->orthanc_study_id }}" 
+                        src="{{ $orthanc_url . config('orthanc.viewer_path') }}?StudyInstanceUIDs={{ $study_instance_uid }}" 
                         style="width: 100%; height: 600px; border: 1px solid #ccc; border-radius: 4px; background-color: #000;"
                         allowfullscreen>
                     </iframe>
                     <div style="text-align: right; margin-top: 8px;">
-                        <a href="{{ $orthanc_url . config('orthanc.viewer_path') }}?study={{ $info_medica->orthanc_study_id }}" target="_blank" style="color: #4a90e2; text-decoration: none; font-size: 14px;">Abrir en ventana completa &nearr;</a>
+                        <a href="{{ $orthanc_url . config('orthanc.viewer_path') }}?StudyInstanceUIDs={{ $study_instance_uid }}" target="_blank" style="color: #4a90e2; text-decoration: none; font-size: 14px;">Abrir en ventana completa &nearr;</a>
                     </div>
                 </div>
             @endif
