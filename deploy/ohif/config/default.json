@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "dicomWeb": [
+      {
+        "name": "Orthanc",
+        "wadoURI": "/orthanc/dicom-web",
+        "qidoRoot": "/orthanc/dicom-web",
+        "wadoRoot": "/orthanc/dicom-web",
+        "qidoSupportsIncludeField": true
+      }
+    ]
+  }
+}

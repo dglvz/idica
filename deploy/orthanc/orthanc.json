@@ -1,0 +1,10 @@
+{
+  "Name": "Orthanc",
+  "StorageDirectory": "/var/lib/orthanc/db",
+  "HttpServer": {
+    "Port": 8042
+  },
+  "DicomWeb": {
+    "Enable": true
+  }
+}

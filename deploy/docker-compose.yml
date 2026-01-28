@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  orthanc:
+    image: osimis/orthanc:23.12.1
+    container_name: orthanc
+    ports:
+      - "8042:8042"
+    volumes:
+      - ./orthanc/storage:/var/lib/orthanc/db
+      - ./orthanc/orthanc.json:/etc/orthanc/orthanc.json:ro
+    restart: unless-stopped
+
+  ohif:
+    image: ohif/viewer:latest
+    container_name: ohif
+    # El puerto interno puede variar según la imagen. Si la imagen sirve en 80, esto no hace mapping a host
+    expose:
+      - "80"
+    volumes:
+      - ./ohif/config:/app/config:ro
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - orthanc
+      - ohif
+    restart: unless-stopped
