@@ -97,10 +97,15 @@ class InfoMedicaController extends Controller
     {
         $info_medica->load('paciente');
 
-        $study_instance_uid = $this->orthanc->getStudyInstanceUID($info_medica->orthanc_study_id);
+        // Obtener StudyInstanceUID desde Orthanc usando el servicio
+        $study_instance_uid = $this->orthancService->getStudyInstanceUID($info_medica->orthanc_study_id);
+
+        // Usar la URL pública del viewer (proxy) — se puede ajustar con ORTHANC_VIEWER_URL en .env
+        $viewer_base = env('ORTHANC_VIEWER_URL', config('app.url'));
+
         return view('info_medica.show', [
             'info_medica' => $info_medica,
-            'orthanc_url' => config('orthanc.url'),
+            'orthanc_url' => rtrim($viewer_base, '/'),
             'study_instance_uid' => $study_instance_uid,
         ]);
     }
